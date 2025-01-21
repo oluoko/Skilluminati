@@ -1,13 +1,34 @@
-import React, { useState } from "react";
-import { Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import * as SecureStore from "expo-secure-store";
+import { Redirect } from "expo-router";
 
 export default function Index() {
-  const [loggedInUser, setLoggedInUser] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [loggedInUser, setloggedInUser] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const subscription = async () => {
+      try {
+        // Use getItemAsync instead of getItem
+        const token = await SecureStore.getItemAsync("accessToken");
+        setloggedInUser(!!token); // Set to true if token exists
+      } catch (error) {
+        console.error("Error fetching access token:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    subscription();
+  }, []);
 
   return (
-    <View className="flex-1 justify-center items-center bg-slate-900">
-      <Text className="text-white text-2xl">Hello NativeWind!</Text>
-    </View>
+    <>
+      {loading ? (
+        <></>
+      ) : (
+        <Redirect href={!loggedInUser ? "/(routes)/onboarding" : "/(tabs)"} />
+      )}
+    </>
   );
 }
