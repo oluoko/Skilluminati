@@ -1,12 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import OnboardingScreen from "@/screens/onboarding/onboarding.screen";
 
 export default function index() {
-  return (
-    <View className="flex items-center justify-center h-full">
-      <Text>Onboarding</Text>
-    </View>
-  );
+  return <OnboardingScreen />;
 }
-
-const styles = StyleSheet.create({});
